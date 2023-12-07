@@ -11,7 +11,7 @@ export const Transaction = (props: ITransactionProps) => {
   const [hover, setHover] = useState(false)
   return (
     <motion.div
-      className=" bg-white drop-shadow rounded-sm grid grid-cols-[7%_10%_1fr_1fr_3%] w-1/2 h-[30px]"
+      className=" bg-slate-500 drop-shadow rounded-sm grid grid-cols-[7%_10%_1fr_1fr_3%] w-1/2 h-[30px]"
       onHoverStart={() => {
         console.log("hover")
         setHover(true)
