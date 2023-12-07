@@ -10,6 +10,7 @@ export const Transaction = (props: ITransactionProps) => {
   const { index, reason, value } = props
   const [scope, animate] = useAnimate()
   const [hover, setHover] = useState(false)
+
   useEffect(() => {
     if (hover) {
       animate(scope.current, { opacity: 1, from: { opacity: 0 } })
@@ -17,6 +18,7 @@ export const Transaction = (props: ITransactionProps) => {
       animate(scope.current, { opacity: 0 })
     }
   }, [animate, hover, scope])
+
   return (
     <motion.div
       className=" bg-white drop-shadow rounded-sm grid grid-cols-[7%_10%_1fr_1fr_3%] w-1/2 h-[30px]"
@@ -27,6 +29,7 @@ export const Transaction = (props: ITransactionProps) => {
       onHoverEnd={() => {
         setHover(false)
       }}
+      whileHover={{ x: "10px" }}
     >
       {
         <motion.div
