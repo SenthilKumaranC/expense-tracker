@@ -1,35 +1,33 @@
-import logo from "./logo.svg"
-import { Counter } from "./features/counter/Counter"
 import "./App.css"
-import { useMemo, useState } from "react"
-import { v4 } from "uuid"
+import { useEffect, useMemo } from "react"
 
 import { Transaction } from "./components/Transaction/Transaction"
-
-export interface ITransaction {
-  id: string
-  value: number
-  reason: string
-}
+import axios from "axios"
+import {
+  addTransactions,
+  selectAll,
+} from "./features/transactions/transactions.slice"
+import { useDispatch, useSelector } from "react-redux"
 
 function App() {
-  const [transactions] = useState<ITransaction[]>([
-    {
-      id: v4(),
-      value: 2000,
-      reason: "lottery",
-    },
-    {
-      id: v4(),
-      value: 10000,
-      reason: "income",
-    },
-    {
-      id: v4(),
-      value: -2000,
-      reason: "cinema",
-    },
-  ])
+  const transactions = useSelector(selectAll)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const abortController = new AbortController()
+    axios
+      .get("http://localhost:4444/transactions", {
+        signal: abortController.signal,
+      })
+      .then((result) => {
+        console.log(result.data)
+        dispatch(addTransactions(result.data))
+      })
+    return () => {
+      abortController.abort()
+    }
+  }, [dispatch])
 
   const transactionsUI = useMemo(() => {
     return transactions.map((transaction, index) => {

@@ -1,29 +1,15 @@
-import { motion } from "framer-motion"
+import { motion, useAnimate } from "framer-motion"
+import { ITransaction } from "../../App"
+import { useCallback, useEffect, useState } from "react"
 import { useOpacity } from "./useOpacity"
-import {
-  ITransaction,
-  removeTransaction,
-} from "../../features/transactions/transactions.slice"
-import { useCallback } from "react"
-import { useDispatch } from "react-redux"
-import axios from "axios"
 
 export interface ITransactionProps extends ITransaction {
   index: number
 }
 
 export const Transaction = (props: ITransactionProps) => {
-  const { index, reason, value, id } = props
+  const { index, reason, value } = props
   const { scope, opacityOn, opacityOff } = useOpacity()
-
-  const dispatch = useDispatch()
-
-  const removeTransactionHandler = useCallback(() => {
-    axios.delete(`http://localhost:4444/transactions/${id}`).then((result) => {
-      console.log(result.data)
-      dispatch(removeTransaction(result.data))
-    })
-  }, [dispatch, id])
 
   return (
     <motion.div
@@ -34,7 +20,6 @@ export const Transaction = (props: ITransactionProps) => {
     >
       {
         <motion.button
-          onClick={removeTransactionHandler}
           ref={scope}
           className={`bg-red-700 text-white  opacity-0 rounded-lg`}
           whileTap={{ scale: 0.8 }}
